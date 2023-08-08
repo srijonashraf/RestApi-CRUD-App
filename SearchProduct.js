@@ -3,6 +3,8 @@ const inputGroupHide = document.querySelector('#inputGroupHide');
 const SearchResetButton = document.querySelector('#SearchResetButton');
 const productDetailsTextArea = document.querySelector('#productDetailsTextArea'); // Assuming this is the element where you show messages
 let filter_id = '';
+
+
 SearchProduct.addEventListener('change', async () => {
     if (SearchProduct.value.trim().length > 0) {
         SearchProduct.disabled = true;
@@ -12,9 +14,9 @@ SearchProduct.addEventListener('change', async () => {
         try {
             const url = `https://crud.teamrabbil.com/api/v1/ReadProduct`;
             const response = await axios.get(url);
-            const allProductData = response.data.data; // Accessing the "data" array
+            const allProductData = await response.data.data; // Accessing the "data" array
 
-            const filteredProduct = allProductData.find(product => product.ProductCode === SearchProductValue);
+            const filteredProduct = await allProductData.find(product => product.ProductCode === SearchProductValue);
 
             if (filteredProduct) {
                 // Update input fields with fetched product data

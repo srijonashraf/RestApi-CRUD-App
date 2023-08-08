@@ -6,9 +6,9 @@ const ExecDeleteProduct = async () => {
         try {
             const url = `https://crud.teamrabbil.com/api/v1/ReadProduct`;
             const response = await axios.get(url);
-            const allProductData = response.data.data;
+            const allProductData = await response.data.data;
 
-            const filteredProduct = allProductData.find(product => product.ProductCode === DeleteProductByCode);
+            const filteredProduct = await allProductData.find(product => product.ProductCode === DeleteProductByCode);
 
             if (filteredProduct) {
                 try {
