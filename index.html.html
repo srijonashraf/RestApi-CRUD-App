@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>CRUD</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.tutorialjinni.com/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.tutorialjinni.com/notify/0.4.2/notify.min.js"></script>
+
+
+    <style>
+        textarea.form-control {
+            min-height: calc(23.5em + 0.75rem + calc(var(--bs-border-width) * 2));
+            font-size: 0.75rem;
+
+        }
+
+        textarea {
+            color: rgb(220, 53, 69) !important;
+            resize: none;
+        }
+
+        .fs-6 {
+            font-size: 0.75rem !important;
+        }
+    </style>
+
+</head>
+
+<body class="p-3 m-0 border-0 bd-example m-0 border-0 bd-example-row">
+
+
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="GetProduct col d-flex flex-column gap-2">
+                <button onclick="ExecGetProductList()" class="btn btn-primary">GetProductList</button>
+                <textarea name="GetProductList" id="GetProductListTextArea" class="form-control"></textarea>
+            </div>
+
+            <div class="CreateProduct col d-flex flex-column gap-2">
+                <button type="submit" onclick="ExecCreateProduct()" class="btn btn-success">CreateProduct</button>
+                <form action="" class="form-control d-flex  flex-column">
+                    <div id="createProductForm" class="d-flex flex-column mt-3">
+                        <input type="url" id="img" name="img" class="form-control form-control-sm"
+                            placeholder="Image URL:" required><br>
+                        <input type="number" id="productCode" name="productCode" class="form-control form-control-sm"
+                            placeholder="Product Code:" required><br>
+                        <input type="text" id="productName" name="productName" class="form-control form-control-sm"
+                            placeholder="Product Name:" required><br>
+                        <input type="text" id="qty" name="qty" class="form-control form-control-sm"
+                            placeholder="Quantity" required><br>
+                        <input type="text" id="totalPrice" name="totalPrice" class="form-control form-control-sm"
+                            placeholder="Total Price:" required><br>
+                        <input type="text" id="unitPrice" name="unitPrice" class="form-control form-control-sm"
+                            placeholder="Unit Price:" required><br>
+                    </div>
+                </form>
+            </div>
+
+            <div class="UpdateProduct col d-flex flex-column gap-2">
+                <button type="submit" onclick="ExecUpdateProduct()" class="btn btn-dark">UpdateProduct</button>
+                <form action="" class="form-control d-flex  flex-column">
+                    <div id="UpdateProductForm" class="d-flex flex-column mt-3">
+                        <div class="d-flex gap-1">
+                            <input type="number" id="SearchProduct" class="form-control  form-control-sm"
+                                placeholder="SearchProduct" required> <br>
+                            <button class="btn btn-primary" id="SearchResetButton" style="display: none;">Reset</button>
+                        </div>
+                        <div id="inputGroupHide" style="display: none !important;"
+                            class="mt-4 d-flex flex-column align-items-start">
+                            <label for="imgUpdate" class="fs-6 label">Image URL:</label>
+                            <input type="url" id="imgUpdate" name="imgUpdate" class="form-control form-control-sm"
+                                placeholder="Image URL:" required><br>
+
+                            <label for="productCodeUpdate" class="fs-6 label">Product Code:</label>
+                            <input type="text" id="productCodeUpdate" name="productCodeUpdate"
+                                class="form-control form-control-sm" placeholder="Product Code:" required><br>
+
+                            <label for="productNameUpdate" class="fs-6 label">Product Name:</label>
+                            <input type="text" id="productNameUpdate" name="productNameUpdate"
+                                class="form-control form-control-sm" placeholder="Product Name:" required><br>
+
+                            <label for="qtyUpdate" class="fs-6 label">Quantity Update: </label>
+                            <input type="text" id="qtyUpdate" name="qtyUpdate" class="form-control form-control-sm"
+                                placeholder="Quantity Update: " required><br>
+
+                            <label for="totalPriceUpdate" class="fs-6 label">Total Price: </label>
+                            <input type="text" id="totalPriceUpdate" name="totalPriceUpdate"
+                                class="form-control form-control-sm" placeholder="Total Price:" required><br>
+
+                            <label for="unitPriceUpdate" class="fs-6 label">Unit Price: </label>
+                            <input type="text" id="unitPriceUpdate" name="unitPriceUpdate"
+                                class="form-control form-control-sm" placeholder="Unit Price:" required><br>
+
+                            <label for="id" class="fs-6 label">Id: </label>
+                            <input type="text" id="id" name="id" class="form-control form-control-sm" placeholder="Id: "
+                                required><br>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="DeleteProduct col d-flex flex-column gap-2">
+                <button onclick="ExecDeleteProduct()" class="btn btn-danger">DeleteProduct</button>
+                <div class="d-flex gap-1">
+                    <input type="number" id="DeleteProductByCode" name="DeleteProductByCode"
+                        class="form-control form-control-sm" placeholder="Product Id:" required>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function simpleNotify(e) {
+            $(e).notify("Simple Notify");
+        }
+        function notifySuccess(message) {
+            $.notify(message, { position: "top center", className: "success" });
+        }
+
+        function notifyError(message) {
+            $.notify(message, { position: "top center", className: "error" });
+        }
+
+        function notifyInfoLeft(message) {
+            $.notify(message, { position: "left", className: "info" });
+        }
+
+        function notifyWarningRight(message) {
+            $.notify(message, { position: "right", className: "warn" });
+        }
+
+        function notifyInfoTopLeft(message) {
+            $.notify(message, { position: "top left", className: "info" });
+        }
+
+        function notifyInfoTopRight(message) {
+            $.notify(message, { position: "top right", className: "info" });
+        }
+
+        function notifyInfoBottomRight(message) {
+            $.notify(message, { position: "bottom right", className: "info" });
+        }
+
+        function notifyInfoBottomCenter(message) {
+            $.notify(message, { position: "bottom center", className: "info" });
+        }
+
+    </script>
+
+
+    <script>
+
+        ExecGetProductList = async () => {
+            let url = "https://crud.teamrabbil.com/api/v1/ReadProduct";
+            let config = {
+                method: 'GET',
+            }
+            try {
+                let response = await axios.get(url, config);
+                let result = await response.data;
+                let formattedResult = JSON.stringify(result, null, 2); // 2 spaces for indentation
+                document.querySelector('#GetProductListTextArea').value = formattedResult;
+                document.querySelector('#GetProductListTextArea').disabled = true;
+                document.querySelector('#GetProductListTextArea').style = 'background-color: rgb(255, 255, 255)';
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+        }
+
+    </script>
+
+    <script>
+        SearchResetButton.addEventListener('click', () => {
+            SearchProduct.value = '';
+            SearchProduct.disabled = false;
+            SearchResetButton.style.display = 'none';
+            inputGroupHide.style = 'display: none !important';
+            document.querySelector('#GetProductListTextArea').value = ''; // Clear any previous messages
+
+        });
+    </script>
+
+    <script>
+
+        const SearchProduct = document.querySelector('#SearchProduct');
+        const inputGroupHide = document.querySelector('#inputGroupHide');
+        const SearchResetButton = document.querySelector('#SearchResetButton');
+        const productDetailsTextArea = document.querySelector('#productDetailsTextArea'); // Assuming this is the element where you show messages
+        let filter_id = '';
+        SearchProduct.addEventListener('keydown', async (event) => {
+            if (event.key === 'Enter' && SearchProduct.value.trim().length > 0) {
+                SearchProduct.disabled = true;
+                SearchResetButton.style.display = 'block';
+                const SearchProductValue = SearchProduct.value.trim();
+
+                try {
+                    const url = `https://crud.teamrabbil.com/api/v1/ReadProduct`;
+                    const response = await axios.get(url);
+                    const allProductData = response.data.data; // Accessing the "data" array
+
+                    const filteredProduct = allProductData.find(product => product.ProductCode === SearchProductValue);
+
+                    if (filteredProduct) {
+                        // Update input fields with fetched product data
+                        document.querySelector('#imgUpdate').value = filteredProduct.Img;
+                        document.querySelector('#productCodeUpdate').value = filteredProduct.ProductCode;
+                        document.querySelector('#productNameUpdate').value = filteredProduct.ProductName;
+                        document.querySelector('#qtyUpdate').value = filteredProduct.Qty;
+                        document.querySelector('#totalPriceUpdate').value = filteredProduct.TotalPrice;
+                        document.querySelector('#unitPriceUpdate').value = filteredProduct.UnitPrice;
+                        document.querySelector('#GetProductListTextArea').value = JSON.stringify(filteredProduct, null, 2);
+                        document.querySelector('#id').value = filteredProduct._id;
+                        filter_id = filteredProduct._id;
+
+                        // Display the input fields container
+                        inputGroupHide.style.display = 'block';
+                    } else {
+                        // Display an error message
+                        document.querySelector('#GetProductListTextArea').value = 'Product with specified code not found';
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    // Display an error message
+                    document.querySelector('#GetProductListTextArea').value = 'Error fetching product details';
+                }
+            }
+
+        });
+
+
+    </script>
+
+    <script>
+        ExecCreateProduct = async () => {
+            const img = document.querySelector('#img').value;
+            const productCode = document.querySelector('#productCode').value;
+            const productName = document.querySelector('#productName').value;
+            const qty = document.querySelector('#qty').value;
+            const totalPrice = document.querySelector('#totalPrice').value;
+            const unitPrice = document.querySelector('#unitPrice').value;
+
+            console.log(img, productCode, productName, qty, totalPrice, unitPrice);
+
+            let url = 'https://crud.teamrabbil.com/api/v1/CreateProduct';
+            let bodyData = {
+                Img: img,
+                ProductCode: productCode,
+                ProductName: productName,
+                Qty: qty,
+                TotalPrice: totalPrice,
+                UnitPrice: unitPrice
+            };
+
+            let config = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data: bodyData
+            };
+
+            try {
+                if (img === '' || productCode === '' || productName === '' || qty === '' || totalPrice === '' || unitPrice === '') {
+                    notifyError('Please fill all the fields');
+                } else {
+                    const response = await axios.post(url, bodyData, config);
+                    console.log(response.data);
+                    notifySuccess('Product Added!');
+                    const successMessage = JSON.stringify(bodyData, null, 2);
+                    document.querySelector('#GetProductListTextArea').value = successMessage;
+
+                    // Clear input fields after success
+                    document.querySelector('#img').value = '';
+                    document.querySelector('#productCode').value = '';
+                    document.querySelector('#productName').value = '';
+                    document.querySelector('#qty').value = '';
+                    document.querySelector('#totalPrice').value = '';
+                    document.querySelector('#unitPrice').value = '';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+
+        }
+
+
+    </script>
+
+
+    <script>
+        ExecUpdateProduct = async () => {
+
+            const img = document.querySelector('#imgUpdate').value;
+            const productCode = document.querySelector('#productCodeUpdate').value;
+            const productName = document.querySelector('#productNameUpdate').value;
+            const qty = document.querySelector('#qtyUpdate').value;
+            const totalPrice = document.querySelector('#totalPriceUpdate').value;
+            const unitPrice = document.querySelector('#unitPriceUpdate').value;
+            const id = document.querySelector('#id').value;
+            let url = `https://crud.teamrabbil.com/api/v1/UpdateProduct/${id}`;
+
+            let bodyData = {
+                Img: img,
+                ProductCode: productCode,
+                ProductName: productName,
+                Qty: qty,
+                TotalPrice: totalPrice,
+                UnitPrice: unitPrice
+            };
+
+            let config = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data: bodyData
+            };
+
+            try {
+                if (img === '' || productCode === '' || productName === '' || qty === '' || totalPrice === '' || unitPrice === '') {
+                    notifyError('Please fill all the fields');
+                } else {
+                    const response = await axios.post(url, bodyData, config);
+                    console.log(response.data);
+                    notifySuccess('Product Updated!');
+                    const successMessage = JSON.stringify(bodyData, null, 2);
+                    document.querySelector('#GetProductListTextArea').value = successMessage;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+
+        }
+    </script>
+
+
+    <script>
+
+        const ExecDeleteProduct = async () => {
+            const DeleteProductByCode = document.querySelector('#DeleteProductByCode').value;
+
+            if (DeleteProductByCode.trim().length > 0) {
+                try {
+                    const url = `https://crud.teamrabbil.com/api/v1/ReadProduct`;
+                    const response = await axios.get(url);
+                    const allProductData = response.data.data;
+
+                    const filteredProduct = allProductData.find(product => product.ProductCode === DeleteProductByCode);
+
+                    if (filteredProduct) {
+                        try {
+                            const deleteUrl = `https://crud.teamrabbil.com/api/v1/DeleteProduct/${filteredProduct._id}`;
+                            const config = {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                data: {}
+                            };
+
+                            try {
+                                const deleteResponse = await axios(deleteUrl, config);
+                                console.log(deleteResponse.data);
+                                notifySuccess('Product Deleted!');
+                            } catch (deleteError) {
+                                console.error('Delete Error:', deleteError);
+                                notifyError('Failed to delete product.');
+                            }
+                        } catch (deleteError) {
+                            console.error('Delete URL Error:', deleteError);
+                            notifyError('Failed to construct delete URL.');
+                        }
+                    } else {
+                        // Display an error message
+                        document.querySelector('#GetProductListTextArea').value = 'Product with specified code not found';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    // Display an error message
+                    document.querySelector('#GetProductListTextArea').value = 'Error fetching product details';
+                }
+            }
+        };
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
