@@ -3,8 +3,8 @@ const inputGroupHide = document.querySelector('#inputGroupHide');
 const SearchResetButton = document.querySelector('#SearchResetButton');
 const productDetailsTextArea = document.querySelector('#productDetailsTextArea'); // Assuming this is the element where you show messages
 let filter_id = '';
-SearchProduct.addEventListener('keydown', async (event) => {
-    if (event.key === 'Enter' && SearchProduct.value.trim().length > 0) {
+SearchProduct.addEventListener('change', async () => {
+    if (SearchProduct.value.trim().length > 0) {
         SearchProduct.disabled = true;
         SearchResetButton.style.display = 'block';
         const SearchProductValue = SearchProduct.value.trim();
