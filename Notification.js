@@ -1,12 +1,9 @@
-function simpleNotify(e) {
-    $(e).notify("Simple Notify");
-}
 function notifySuccess(message) {
-    $.notify(message, { position: "top center", className: "success" });
+    $.notify(message, { position: "top right", className: "success" });
 }
 
 function notifyError(message) {
-    $.notify(message, { position: "top center", className: "error" });
+    $.notify(message, { position: "top right", className: "error" });
 }
 
 function notifyInfoLeft(message) {

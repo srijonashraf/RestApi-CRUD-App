@@ -36,12 +36,13 @@ const ExecDeleteProduct = async () => {
                 }
             } else {
                 // Display an error message
-                document.querySelector('#GetProductListTextArea').value = 'Product with specified code not found';
+                // document.querySelector('#GetProductListTextArea').value = 'Product with specified code not found.';
+                notifyError('Product Not Found');
             }
         } catch (error) {
             console.error('Error:', error);
             // Display an error message
-            document.querySelector('#GetProductListTextArea').value = 'Error fetching product details';
+            document.querySelector('#GetProductListTextArea').value = 'Error fetching product details.';
         }
     }
 };

@@ -34,7 +34,13 @@ SearchProduct.addEventListener('keydown', async (event) => {
                 inputGroupHide.style.display = 'block';
             } else {
                 // Display an error message
-                document.querySelector('#GetProductListTextArea').value = 'Product with specified code not found';
+                // document.querySelector('#GetProductListTextArea').value = 'Product Not Found';
+                notifyError('Product Not Found Check From "GetProductList"');
+                SearchProduct.disabled = false;
+                SearchResetButton.style.display = 'none';
+                SearchProduct.value = '';
+
+
             }
 
         } catch (error) {

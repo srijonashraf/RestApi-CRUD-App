@@ -28,9 +28,14 @@ ExecUpdateProduct = async () => {
     };
 
     try {
-        if (img === '' || productCode === '' || productName === '' || qty === '' || totalPrice === '' || unitPrice === '') {
-            notifyError('Please fill all the fields');
-        } else {
+        if (window.getComputedStyle(inputGroupHide).display === 'none') {
+            notifyError('At first Search the Product');
+        } else if (img === '' || productCode === '' || productName === '' || qty === '' || totalPrice === '' || unitPrice === '') {
+            notifyError('Please Fill all the fields');
+        }
+
+
+        else {
             const response = await axios.post(url, bodyData, config);
             console.log(response.data);
             notifySuccess('Product Updated!');
