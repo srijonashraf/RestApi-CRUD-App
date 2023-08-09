@@ -26,6 +26,11 @@ const ExecDeleteProduct = async () => {
                         const deleteResponse = await axios(deleteUrl, config);
                         console.log(deleteResponse.data);
                         notifySuccess('Product Deleted!');
+                        if (DeleteProductByCode === document.querySelector('#productCodeUpdate').value) {
+
+                            Empty();
+                            resetSearchFields();
+                        }
                     } catch (deleteError) {
                         console.error('Delete Error:', deleteError);
                         notifyError('Failed to delete product.');
@@ -38,6 +43,7 @@ const ExecDeleteProduct = async () => {
                 // Display an error message
                 // document.querySelector('#GetProductListTextArea').value = 'Product with specified code not found.';
                 notifyError('Product Not Found');
+
             }
         } catch (error) {
             console.error('Error:', error);
