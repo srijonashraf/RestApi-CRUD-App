@@ -1,15 +1,17 @@
-const SearchProduct = document.querySelector('#SearchProduct');
+const SearchProductButton = document.querySelector('#SearchProductButton');
+const SearchProductByCode = document.querySelector('#SearchProductByCode');
 const inputGroupHide = document.querySelector('#inputGroupHide');
 const SearchResetButton = document.querySelector('#SearchResetButton');
 const productDetailsTextArea = document.querySelector('#productDetailsTextArea'); // Assuming this is the element where you show messages
+const UpdateProductButton = document.querySelector('#UpdateProductButton');
 let filter_id = '';
 
 
-SearchProduct.addEventListener('keydown', async (event) => {
-    if (event.keyCode === 13 && SearchProduct.value.trim().length > 0) {
-        SearchProduct.disabled = true;
-        SearchResetButton.style.display = 'block';
-        const SearchProductValue = SearchProduct.value.trim();
+SearchProduct = async (event) => {
+    event.preventDefault();
+
+    if (SearchProductByCode.value.trim().length > 0) {
+        const SearchProductValue = SearchProductByCode.value.trim();
 
         try {
             const url = `https://crud.teamrabbil.com/api/v1/ReadProduct`;
@@ -32,14 +34,16 @@ SearchProduct.addEventListener('keydown', async (event) => {
 
                 // Display the input fields container
                 inputGroupHide.style.display = 'block';
-            } else {
-                // Display an error message
-                // document.querySelector('#GetProductListTextArea').value = 'Product Not Found';
-                notifyError('Product Not Found Check From "GetProductList"');
-                SearchProduct.disabled = false;
-                SearchResetButton.style.display = 'none';
-                SearchProduct.value = '';
+                UpdateProductButton.style.display = 'block';
 
+            }
+            else if (filteredProduct === undefined) {
+                notifyError('Product Not Found Check From "GetProductList"');
+                SearchProductByCode.value = '';
+                inputGroupHide.style = 'display: none !important';
+                UpdateProductButton.style.display = 'none';
+                EmptyUpdateProductFields();
+                EmptyGetProductListArea();
 
             }
 
@@ -50,4 +54,4 @@ SearchProduct.addEventListener('keydown', async (event) => {
         }
     }
 
-});
+}

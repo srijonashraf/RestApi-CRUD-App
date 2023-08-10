@@ -40,7 +40,7 @@
             <div class="col-md-6 mb-4">
                 <div class="d-flex flex-column gap-2">
                     <button type="submit" onclick="ExecCreateProduct()" class="btn btn-success">CreateProduct</button>
-                    <form action="" class="d-flex flex-column">
+                    <form action="" class="d-flex flex-column form-control">
                         <input type="url" id="img" name="img" class="form-control mb-2" placeholder="Image URL:"
                             required>
                         <input type="number" id="productCode" name="productCode" class="form-control mb-2"
@@ -59,15 +59,18 @@
 
             <div class="col-md-6 mb-4">
                 <div class="d-flex flex-column gap-2">
-                    <button type="submit" onclick="ExecUpdateProduct()" class="btn btn-dark">UpdateProduct</button>
+                    <button type="submit" id="UpdateProductButton" onclick="ExecUpdateProduct()" class="btn btn-dark"
+                        style="display: none;">UpdateProduct</button>
+
                     <form action="" class="form-control d-flex flex-column">
-                        <div class=" d-flex gap-1">
-                            <input type="text" id="SearchProduct" class="form-control form-control-sm"
-                                placeholder="SearchProduct" required>
-                            <button class="btn btn-primary ml-2" onclick="resetSearchFields()" id="SearchResetButton"
-                                style="display: none;">Reset</button>
+                        <div class=" d-flex gap-2">
+                            <input type="text" id="SearchProductByCode" class="form-control form-control-sm"
+                                placeholder="Product Code" required>
+                            <button type="submit" onclick="SearchProduct(event)" id="SearchProductButton"
+                                class="btn btn-bd-primary">Search</button>
                         </div>
-                        <div id="inputGroupHide" style="display: none !important;" class="mt-4 d-flex flex-column align-items-lg-start ">
+                        <div id="inputGroupHide" style="display: none !important;"
+                            class="mt-4 d-flex flex-column align-items-lg-start ">
                             <label for="imgUpdate" class="fs-6 label">Image URL:</label>
                             <input type="url" id="imgUpdate" name="imgUpdate" class="form-control form-control-sm"
                                 placeholder="Image URL:" required><br>
@@ -106,7 +109,7 @@
                     <form action="" class="form-control">
                         <div class="d-flex gap-1">
                             <input type="text" id="DeleteProductByCode" name="DeleteProductByCode"
-                                class="form-control form-control-sm" placeholder="Product Id:" required>
+                                class="form-control form-control-sm" placeholder="Product Code" required>
                         </div>
                     </form>
                 </div>
@@ -114,33 +117,32 @@
 
             <div class="col-12 mt-3">
                 <p class="fw-bold">To Update Product: First click on "GetProductList" to retrieve the Product Code you
-                    want to update, then use the "SearchProduct" field.</p>
+                    want to update, then use the "Search" field.</p>
             </div>
         </div>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    
-    <script src="./notification.js"></script>
-    
-    
-    <script src="./ExecGetProductList.js"></script>
-    
-    <script src="./ResetButton.js"></script>
-    
-    <script src="./SearchProduct.js"> </script>
-    
-    
-    <script src="./ExecCreateProduct.js"></script>
-    
-    
-    <script src="./ExecUpdateProduct.js"></script>
-    
-    
-    <script src="./ExecDeleteProduct.js"></script>
 
-    <script src="./EmptyAllField.js"></script>
+    <script src="./Js/Notification.js"></script>
+
+    <script src="./Js/ExecGetProductList.js"></script>
+
+    <script src="./Js/Reset.js"></script>
+
+    <script src="./Js/SearchProduct.js"> </script>
+
+
+    <script src="./Js/ExecCreateProduct.js"></script>
+
+
+    <script src="./Js/ExecUpdateProduct.js"></script>
+
+
+    <script src="./Js/ExecDeleteProduct.js"></script>
+
+    <script src="./Js/EmptyField.js"></script>
 </body>
 
 </html>

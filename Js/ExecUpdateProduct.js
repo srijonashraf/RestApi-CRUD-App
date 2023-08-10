@@ -28,12 +28,10 @@ ExecUpdateProduct = async () => {
     };
 
     try {
-        if (window.getComputedStyle(inputGroupHide).display === 'none') {
-            notifyError('At first Search the Product');
-        } else if (img === '' || productCode === '' || productName === '' || qty === '' || totalPrice === '' || unitPrice === '') {
+
+        if (img === '' || productCode === '' || productName === '' || qty === '' || totalPrice === '' || unitPrice === '') {
             notifyError('Please Fill all the fields');
         }
-
 
         else {
             const response = await axios.post(url, bodyData, config);
@@ -45,6 +43,5 @@ ExecUpdateProduct = async () => {
     } catch (error) {
         console.error('Error:', error);
     }
-
 
 }
