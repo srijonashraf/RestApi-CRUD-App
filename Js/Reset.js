@@ -49,7 +49,7 @@ EmptyDeleteProductByCode = () => {
 }
 
 ResetSearchFields = () => {
-    SearchProduct.value = '';
+    // SearchProduct.value = '';
     SearchProduct.disabled = false;
     SearchResetButton.style = 'display: none !important';
     inputGroupHide.style = 'display: none !important';

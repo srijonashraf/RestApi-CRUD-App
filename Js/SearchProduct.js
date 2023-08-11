@@ -39,7 +39,7 @@ SearchProduct = async (event) => {
             }
             else if (filteredProduct === undefined) {
                 notifyError('Product Not Found Check From "GetProductList"');
-                SearchProductByCode.value = '';
+                // SearchProductByCode.value = '';
                 inputGroupHide.style = 'display: none !important';
                 UpdateProductButton.style.display = 'none';
                 EmptyUpdateProductFields();
